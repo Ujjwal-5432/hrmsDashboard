@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Employees.css";
 import Sidebar from "../Candidates/Sidebar";
 import msg from '../../Assets/MailIcon.png'
@@ -6,6 +6,8 @@ import notification from '../../Assets/notifications.png'
 import downIcon from "../../Assets/DownIcon.png"
 import ellipse from "../../Assets/ellipse.png"
 import threeDots from "../../Assets/threeDotsIcon.png"
+import ThreeDotMenu from "./ThreeDotMenu";
+import EditEmployee from "./EditEmployee";
 
 const candidates = [
   {
@@ -48,6 +50,28 @@ const candidates = [
 
 const Employees=()=>{
   const[sidebarOpen , setSidebarOpen]=useState(false);
+  const[isOpen,setIsOpen] = useState(null);
+
+  const[show,setShow]=useState(false);
+  const modalRef = useRef();
+
+  useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (modalRef.current && !modalRef.current.contains(event.target)) {
+          setShow(false);
+        }
+      };
+    
+      if (show) {
+        document.addEventListener("mousedown", handleClickOutside);
+        console.log("mousePressed");
+      }
+    
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [show]);
+
   
   return (
     <div className="dashboard">
@@ -105,14 +129,30 @@ const Employees=()=>{
                     </button>
                   </td>
                   <td>{c.experience}</td>
-                  <td>
-                    <img src={threeDots}/>
+                  <td style={{position: "relative"}}>
+                    <img
+                      src={threeDots}
+                      onClick={() => setIsOpen(isOpen === null ? c.id : null)}
+                      className="cursor-pointer"
+                    />
+                    {isOpen === c.id && (
+                      <div className="dropdown">
+                        <div className="dropdown-item" onClick={()=> {setShow(!show); setIsOpen(null)}}>Edit</div>
+                        <div className="dropdown-item">Delete</div>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        {
+          show && (
+            <EditEmployee show={show} setShow={setShow} modalRef={modalRef}/>
+          )
+        }
       </div>
     </div>
   );

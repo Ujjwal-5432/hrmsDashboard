@@ -1,0 +1,230 @@
+.leave-calendar-container {
+    width: 35%;
+    border-radius: 20px;
+    overflow: hidden;
+    font-family: sans-serif;
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  
+  .leave-calendar-header {
+    background-color: hsl(274, 100%, 23%);
+    color: white;
+    padding: 10px 16px;
+    font-size: 16px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    text-align: left;
+  }
+  
+  .calendar-box {
+    padding: 10px;
+    margin: 4px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: left;
+    gap: 1rem;
+    align-items: center;
+    margin: 10px 0;
+    padding: 0 10px;
+  }
+  
+  .arrow {
+    cursor: pointer;
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    padding: 10px 10px;
+  }
+  
+  .day-name {
+    font-weight: bold;
+    text-align: center;
+    color: #555;
+  }
+  
+  .day {
+    height: 40px;
+    text-align: center;
+    padding-top: 10px;
+    position: relative;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .day:hover{
+    background-color: #ddd;
+  }
+  
+  .highlighted {
+    background-color: #eee;
+    border: 1px solid #803cbd;
+  }
+  
+  .dot {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    background-color: #430075;
+    color: white;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .approved-leaves {
+    padding: 10px 16px;
+  }
+  
+  .approved-leaves h4 {
+    color: #430075;
+    margin-bottom: 10px;
+    font-weight:500;
+    text-align: left;
+  }
+  
+  .leave-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* border-top: 1px solid #eee; */
+    padding-top: 10px;
+  }
+  
+  .profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .leave-details {
+    flex-grow: 1;
+    margin-left: 10px;
+  }
+  
+  .name {
+    font-weight: 400;
+    text-align: left;
+  }
+  
+  .role {
+    font-size: 12px;
+    color: gray;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+  }
+  
+  .leave-date {
+    font-size: 13px;
+    color: #555;
+  }
+  
+/* For tablets (landscape, width <= 1024px) */
+@media screen and (max-width: 1024px) {
+    .leave-calendar-container {
+      width: 60%;
+    }
+  
+    .role {
+      max-width: 100px;
+    }
+  }
+  
+  /* For small tablets & large phones (width <= 768px) */
+  @media screen and (max-width: 768px) {
+    .leave-calendar-container {
+      width: 90%;
+      border-radius: 16px;
+    }
+  
+    .calendar-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+  
+    .calendar-grid {
+      gap: 4px;
+      padding: 6px;
+    }
+  
+    .day {
+      height: 36px;
+      font-size: 14px;
+    }
+  
+    .dot {
+      width: 16px;
+      height: 16px;
+      font-size: 11px;
+    }
+  
+    .profile-pic {
+      width: 36px;
+      height: 36px;
+    }
+  
+    .role {
+      max-width: 90px;
+      font-size: 11px;
+    }
+  
+    .leave-date {
+      font-size: 12px;
+    }
+  }
+  
+  /* For mobile phones (width <= 480px) */
+  @media screen and (max-width: 480px) {
+    .leave-calendar-container {
+      width: 100%;
+      border-radius: 12px;
+    }
+  
+    .calendar-grid {
+      gap: 3px;
+      padding: 4px;
+    }
+  
+    .day {
+      height: 30px;
+      font-size: 12px;
+    }
+  
+    .dot {
+      width: 14px;
+      height: 14px;
+      font-size: 10px;
+    }
+  
+    .approved-leaves h4 {
+      font-size: 14px;
+    }
+  
+    .name {
+      font-size: 14px;
+    }
+  
+    .role {
+      font-size: 10px;
+      max-width: 80px;
+    }
+  
+    .leave-date {
+      font-size: 11px;
+    }
+  }
+  

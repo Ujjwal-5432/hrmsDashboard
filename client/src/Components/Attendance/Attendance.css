@@ -1,0 +1,32 @@
+.status {
+    position: relative;
+  }
+  
+.dropDownPos {
+    position: absolute;
+    top: 100%; /* directly below input */
+    left: 0;   /* align with input's left */
+    margin-top: 0.5rem; /* small spacing */
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 10px 0;
+    z-index: 999;
+    width: 40%; /* match input width */
+    cursor: pointer;
+  }
+
+  .dropdown-item-pos{
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    font-size: 14px;
+  }
+  
+  .dropdown-item-pos:hover {
+    background-color: #f0f0f0;
+  }
+
+  .dropdown-item-pos:hover{
+    background-color: #ddd;
+  }

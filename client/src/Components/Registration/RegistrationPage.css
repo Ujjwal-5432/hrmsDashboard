@@ -156,7 +156,7 @@ body {
     color:gray;
   }
 
-  button {
+  .reg-btn{
     margin-top: 20px;
     padding: 10px;
     font-size: 16px;
@@ -168,7 +168,7 @@ body {
     transition: background 0.3s;
   }
   
-  button:hover {
+  .reg-btn:hover {
     background: #5c1a95;
   }
   

@@ -54,7 +54,7 @@ const RegistrationPage = () => {
               </span>
             </div>
 
-            <button type="submit">Register</button>
+            <button type="submit" className="reg-btn">Register</button>
           </form>
 
           <p className="login-link">

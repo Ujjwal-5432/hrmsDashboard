@@ -6,28 +6,28 @@ import employees from "../../Assets/employees.png"
 import logout from "../../Assets/logout.png"
 import leaves from "../../Assets/leaves.png"
 import AddNewCandidate from "./AddNewCandidate";
+import Logout from "../Logout/Logout";
 
 const Sidebar = ()=>{
     const[show,setShow]=useState(false);
     const modalRef = useRef();
-    console.log(show);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-          if (modalRef.current && !modalRef.current.contains(event.target)) {
+        if (modalRef.current && !modalRef.current.contains(event.target)) {
             setShow(false);
-          }
-        };
-      
-        if (show) {
-          document.addEventListener("mousedown", handleClickOutside);
-          console.log("mousePressed");
         }
-      
-        return () => {
-          document.removeEventListener("mousedown", handleClickOutside);
         };
-      }, [show]);
+    
+        if (show) {
+        document.addEventListener("mousedown", handleClickOutside);
+        console.log("mousePressed");
+        }
+    
+        return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [show]);
 
     return(
         <div className="sidebar">
@@ -35,16 +35,10 @@ const Sidebar = ()=>{
             <input className="sidebar-search" type="text" placeholder="Search" />
         
             <h4 className="section">Recruitment</h4>
-            <div className="nav-item" onClick={()=>setShow(!show)}>
-            <img src={contact}/>
-            <span>Candidates</span>
+            <div className="nav-item">
+              <img src={contact}/>
+              <span>Candidates</span>
             </div>
-
-            {
-                show && (
-                    <AddNewCandidate show={show} setShow={setShow} modalRef={modalRef}/>
-                )
-            }
 
             <h4 className="section">Organization</h4>
 
@@ -64,10 +58,16 @@ const Sidebar = ()=>{
             </div>
 
             <h4 className="section">Others</h4>
-            <div className="nav-item">
-            <img src={logout}/>
-            <span>Logout</span>
+
+            <div className="nav-item" onClick={()=> setShow(!show)}>
+                <img src={logout}/>
+                <span>Logout</span>
             </div>
+            {
+                show && (
+                    <Logout show={show} setShow={setShow} modalRef={modalRef} />
+                )
+            }
         </div>
     )
 }

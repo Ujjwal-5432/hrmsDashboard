@@ -5,6 +5,8 @@ import LoginPage from './Components/Registration/LoginPage';
 import {Router,Route,Routes} from 'react-router-dom'
 import CandidatesDashboard from './Components/Candidates/CandidatesDashboard';
 import Employees from './Components/Employees/Employee';
+import Attendance from './Components/Attendance/Attendance';
+import Leaves from './Components/Leaves/Leaves';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
           <Route path='/login' element={<LoginPage/>}/>
           <Route path='/candidates' element={<CandidatesDashboard/>}/>
           <Route path='/employees' element={<Employees/>}/>
+          <Route path='/attendance' element={<Attendance/>}/>
+          <Route path='/leaves' element={<Leaves/>}/>
         </Routes>
     </div>
   );

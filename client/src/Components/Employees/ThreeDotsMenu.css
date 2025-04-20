@@ -1,0 +1,31 @@
+.menu-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .menu-icon {
+    cursor: pointer;
+  }
+  
+  .dropdown {
+    position: absolute;
+    top: 24px;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 10px 0;
+    z-index: 999;
+    width: 120px;
+  }
+  
+  .dropdown-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+  

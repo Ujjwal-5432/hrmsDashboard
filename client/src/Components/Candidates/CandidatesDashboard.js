@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./CandidatesDashboardStyles.css";
 import Sidebar from "./Sidebar";
 import msg from '../../Assets/MailIcon.png'
@@ -6,6 +6,7 @@ import notification from '../../Assets/notifications.png'
 import downIcon from "../../Assets/DownIcon.png"
 import ellipse from "../../Assets/ellipse.png"
 import threeDots from "../../Assets/threeDotsIcon.png"
+import AddNewCandidate from "./AddNewCandidate";
 
 const candidates = [
   {
@@ -47,7 +48,25 @@ const candidates = [
 ];
 
 const CandidatesDashboard=()=>{
-  const[sidebarOpen , setSidebarOpen]=useState(false);
+  const[show,setShow]=useState(false);
+      const modalRef = useRef();
+  
+      useEffect(() => {
+          const handleClickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+              setShow(false);
+            }
+          };
+        
+          if (show) {
+            document.addEventListener("mousedown", handleClickOutside);
+            console.log("mousePressed");
+          }
+        
+          return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+          };
+        }, [show]);
   
   return (
     <div className="dashboard">
@@ -76,8 +95,15 @@ const CandidatesDashboard=()=>{
 
           <div className="header-actions">
             <input type="text" placeholder="Search" />
-            <button className="add-candidate">Add Candidate</button>
+            <button className="add-candidate" onClick={()=>setShow(!show)}>Add Candidate</button>
           </div>
+
+          {
+              show && (
+                  <AddNewCandidate show={show} setShow={setShow} modalRef={modalRef}/>
+              )
+          }
+          
 
         </div>
 
