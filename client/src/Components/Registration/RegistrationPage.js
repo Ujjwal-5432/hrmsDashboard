@@ -2,10 +2,37 @@ import React, { useState } from "react";
 import "./RegistrationPage.css";
 import closeEye from '../../Assets/closeEyeIcon.png'
 import openEye from '../../Assets/openEyeIcon.png'
+import { register } from "../../api/auth";
+import {useNavigate} from "react-router-dom";
 
 const RegistrationPage = () => {
   const[showPassword , setShowPassword] = useState(false);
   const[showConfirmPassword , setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
+  
+  const [form, setForm] = useState({ name: '', email: '', password: '', confirmpassword: '', role: 'Admin' });
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(form);
+      const res = await register(form);
+      console.log('User registered:', res.data);
+      alert("You have registered successfully!!! Now you need to login!!!");
+      navigate('/login')
+      // localStorage.setItem('token', res.data.token);
+    } catch (err) {
+      const msg = err.response.data.message;
+      if(msg == "User already exists"){
+        alert("User already exists!!!");
+      }
+      if(msg === "Passwords do not match"){
+        alert("Password & Confirm Password is not matching!!!");
+      }
+      
+      console.error(err.response.data);
+    }
+  };
 
   return (
     <div className="container">
@@ -31,16 +58,17 @@ const RegistrationPage = () => {
       <div className="right-section">
         <div className="form-box">
           <h2>Welcome to Dashboard</h2>
-          <form>
+
+          <form onSubmit={handleSubmit}>
             <label>Full name*</label>
-            <input type="text" placeholder="Full name" />
+            <input type="text" placeholder="Full name" onChange={(e) => setForm({ ...form, name: e.target.value })}/>
 
             <label>Email Address*</label>
-            <input type="email" placeholder="Email Address" />
+            <input type="email" placeholder="Email Address" onChange={(e) => setForm({ ...form, email: e.target.value })}/>
 
             <label>Password*</label>
             <div className="password-input">
-              <input type={showPassword ? "text" : "password"} placeholder="Password" />
+              <input type={showPassword ? "text" : "password"} placeholder="Password" onChange={(e) => setForm({ ...form, password: e.target.value })}/>
               <span className="eye-icon" onClick={()=> setShowPassword(!showPassword)}>
                 <img src={showPassword ? closeEye : openEye}/>
               </span>
@@ -48,7 +76,7 @@ const RegistrationPage = () => {
 
             <label>Confirm Password*</label>
             <div className="password-input">
-              <input type="password" placeholder="Confirm Password" />
+              <input type="password" placeholder="Confirm Password" onChange={(e) => setForm({ ...form, confirmpassword: e.target.value })} />
               <span className="eye-icon" onClick={()=> setShowConfirmPassword(!showConfirmPassword)}>
                 <img src={showConfirmPassword ? closeEye : openEye}/>
               </span>

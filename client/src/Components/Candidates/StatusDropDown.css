@@ -1,0 +1,51 @@
+.status-dropdown {
+    position: relative;
+    display: inline-block;
+    font-family: sans-serif;
+  }
+  
+  .status-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    min-width: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .arrow {
+    margin-left: 10px;
+    font-size: 0.8rem;
+  }
+  
+  .status-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 6px 0;
+    z-index: 1000;
+    min-width: 120px;
+  }
+  
+  .status-option {
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .status-option:hover {
+    background-color: #f2f2f2;
+  }
+  
+  .status-option.active {
+    background-color: #eee;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  

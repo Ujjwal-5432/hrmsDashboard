@@ -7,6 +7,7 @@ import logout from "../../Assets/logout.png"
 import leaves from "../../Assets/leaves.png"
 import AddNewCandidate from "./AddNewCandidate";
 import Logout from "../Logout/Logout";
+import { Link } from "react-router-dom";
 
 const Sidebar = ()=>{
     const[show,setShow]=useState(false);
@@ -35,27 +36,27 @@ const Sidebar = ()=>{
             <input className="sidebar-search" type="text" placeholder="Search" />
         
             <h4 className="section">Recruitment</h4>
-            <div className="nav-item">
+            <Link className="nav-item" to='/candidates'>
               <img src={contact}/>
               <span>Candidates</span>
-            </div>
+            </Link>
 
             <h4 className="section">Organization</h4>
 
-            <div className="nav-item">
+            <Link className="nav-item" to='/employees'>
                 <img src={employees}/>
                 <span>Employees</span>
-            </div>
+            </Link>
 
-            <div className="nav-item">
-            <img src={attendance}/>
-            <span>Attendance</span>
-            </div>
+            <Link className="nav-item" to='/attendance'>
+                <img src={attendance}/>
+                <span>Attendance</span>
+            </Link>
 
-            <div className="nav-item">
-            <img src={leaves}/>
-            <span>Leaves</span>
-            </div>
+            <Link className="nav-item" to='/leaves'>
+                <img src={leaves}/>
+                <span>Leaves</span>
+            </Link>
 
             <h4 className="section">Others</h4>
 

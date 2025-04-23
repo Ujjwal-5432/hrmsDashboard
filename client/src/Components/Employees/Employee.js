@@ -8,45 +8,7 @@ import ellipse from "../../Assets/ellipse.png"
 import threeDots from "../../Assets/threeDotsIcon.png"
 import ThreeDotMenu from "./ThreeDotMenu";
 import EditEmployee from "./EditEmployee";
-
-const candidates = [
-  {
-    id: 1,
-    name: "Jacob William",
-    email: "jacob.william@example.com",
-    phone: "(252) 555-0111",
-    position: "Senior Developer",
-    status: "new",
-    experience: "1+"
-  },
-  {
-    id: 2,
-    name: "Guy Hawkins",
-    email: "kenzi.lawson@example.com",
-    phone: "(907) 555-0101",
-    position: "Human Resource Intern",
-    status: "new",
-    experience: "0"
-  },
-  {
-    id: 3,
-    name: "Arlene McCoy",
-    email: "arlene.mccoy@example.com",
-    phone: "(302) 555-0107",
-    position: "Full Time Designer",
-    status: "selected",
-    experience: "2"
-  },
-  {
-    id: 4,
-    name: "Leslie Alexander",
-    email: "willie.jennings@example.com",
-    phone: "(207) 555-0119",
-    position: "Full Time Developer",
-    status: "rejected",
-    experience: "0"
-  }
-];
+import axios from "axios";
 
 const Employees=()=>{
   const[sidebarOpen , setSidebarOpen]=useState(false);
@@ -72,7 +34,64 @@ const Employees=()=>{
       };
     }, [show]);
 
-  
+    const [employees, setEmployees] = useState([]);
+
+    useEffect(() => {
+      const fetchEmployees = async () => {
+        try {
+          const token = localStorage.getItem('token'); 
+    
+          const res = await axios.get('http://localhost:8000/api/employees', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+    
+          setEmployees(res.data);
+        } catch (err) {
+          console.error('Error fetching employees:', err.response?.data || err.message);
+        }
+      };
+
+      fetchEmployees();
+    }, []);
+
+    const handleDelete = async (id) => {
+      const confirmDelete = window.confirm("Are you sure you want to delete this candidate?");
+      if (!confirmDelete) return;
+    
+      try {
+        const token = localStorage.getItem("token");
+    
+        await axios.delete(`http://localhost:8000/api/employees/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+    
+        alert("Candidate deleted successfully");
+        window.location.reload();
+      } catch (err) {
+        console.error("Delete error:", err.message);
+        alert("Failed to delete candidate");
+      }
+    };
+
+    const [searchTerm, setSearchTerm] = useState("");
+    
+    const filteredEmployees = employees.filter((c) =>
+      c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.position.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const formatDate = (isoString) => {
+      const date = isoString ? new Date(isoString) : new Date();
+      return `${date.getFullYear()}-${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+    };
+    
   return (
     <div className="dashboard">
       <Sidebar/>
@@ -96,7 +115,7 @@ const Employees=()=>{
           </div>
 
           <div className="header-actions">
-            <input type="text" placeholder="Search" />
+            <input type="text" placeholder="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
           </div>
 
         </div>
@@ -116,29 +135,25 @@ const Employees=()=>{
               </tr>
             </thead>
             <tbody>
-              {candidates.map((c, i) => (
+              {filteredEmployees.map((c, i) => (
                 <tr key={c.id}>
                   <td><img src={ellipse}/></td>
                   <td>{c.name}</td>
                   <td>{c.email}</td>
                   <td>{c.phone}</td>
                   <td>{c.position}</td>
-                  <td>
-                    <button className={`status ${c.status}`}>
-                      {c.status.charAt(0).toUpperCase() + c.status.slice(1)}
-                    </button>
-                  </td>
-                  <td>{c.experience}</td>
+                  <td>{c.department}</td>
+                  <td>{formatDate(c.dateOfJoining)}</td>
                   <td style={{position: "relative"}}>
                     <img
                       src={threeDots}
-                      onClick={() => setIsOpen(isOpen === null ? c.id : null)}
+                      onClick={() => setIsOpen(isOpen === null ? c._id : null)}
                       className="cursor-pointer"
                     />
-                    {isOpen === c.id && (
+                    {isOpen === c._id && (
                       <div className="dropdown">
                         <div className="dropdown-item" onClick={()=> {setShow(!show); setIsOpen(null)}}>Edit</div>
-                        <div className="dropdown-item">Delete</div>
+                        <div className="dropdown-item" onClick={()=> {handleDelete(c._id)}}>Delete</div>
                       </div>
                     )}
                   </td>

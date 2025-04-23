@@ -5,49 +5,61 @@ import notification from '../../Assets/notifications.png'
 import downIcon from "../../Assets/DownIcon.png"
 import ellipse from "../../Assets/ellipse.png"
 import threeDots from "../../Assets/threeDotsIcon.png"
+import AttendanceDropDown from "./AttendanceDropDown"
+import axios from "axios";
 
-const candidates = [
-  {
-    id: 1,
-    name: "Jacob William",
-    email: "jacob.william@example.com",
-    phone: "(252) 555-0111",
-    position: "Senior Developer",
-    status: "new",
-    experience: "1+"
-  },
-  {
-    id: 2,
-    name: "Guy Hawkins",
-    email: "kenzi.lawson@example.com",
-    phone: "(907) 555-0101",
-    position: "Human Resource Intern",
-    status: "new",
-    experience: "0"
-  },
-  {
-    id: 3,
-    name: "Arlene McCoy",
-    email: "arlene.mccoy@example.com",
-    phone: "(302) 555-0107",
-    position: "Full Time Designer",
-    status: "selected",
-    experience: "2"
-  },
-  {
-    id: 4,
-    name: "Leslie Alexander",
-    email: "willie.jennings@example.com",
-    phone: "(207) 555-0119",
-    position: "Full Time Developer",
-    status: "rejected",
-    experience: "0"
-  }
-];
 
 const Attendance=()=>{
     const [openIndex, setOpenIndex] = useState(null);
-    // console.log(isOpen);
+    const [employees, setEmployees] = useState([]);
+
+    useEffect(() => {
+      const fetchEmployees = async () => {
+        try {
+          const token = localStorage.getItem('token'); 
+    
+          const res = await axios.get('http://localhost:8000/api/employees', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+    
+          setEmployees(res.data);
+        } catch (err) {
+          console.error('Error fetching employees:', err.response?.data || err.message);
+        }
+      };
+
+      fetchEmployees();
+    }, []);
+
+    const handleAttendanceChange = async (employeeId, newStatus, date) => {
+      try {
+        const token = localStorage.getItem('token'); 
+        const response = await fetch("http://localhost:8000/api/attendance", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, 
+          },
+          body: JSON.stringify({
+            employeeId,
+            attendance: newStatus,
+            date: date || new Date(), 
+          }),
+        });
+    
+        const data = await response.json();
+        if (response.ok) {
+          console.log("Attendance updated:", data);
+        } else {
+          console.error("Failed to update attendance:", data.message);
+        }
+      } catch (err) {
+        console.error("API Error:", err);
+      }
+    };
+    
 
   return (
     <div className="dashboard">
@@ -85,38 +97,30 @@ const Attendance=()=>{
                 <th>Position</th>
                 <th>Department</th>
                 <th>Task</th>
-                <th>Status</th>
+                <th>Attendance</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {candidates.map((c, i) => (
+              {employees.map((c, i) => (
                 <tr key={c.id}>
                   <td><img src={ellipse}/></td>
                   <td>{c.name}</td>
                   <td>{c.email}</td>
                   <td>{c.phone}</td>
                   <td>{c.position}</td>
-                  <td onClick={() => setOpenIndex(c.id === openIndex ? null : c.id)}>
+                  {/* <td onClick={() => setOpenIndex(c.id === openIndex ? null : c._id)}> */}
 
-                    <button className={`status ${c.status}`}>
-                      {c.status.charAt(0).toUpperCase() + c.status.slice(1)}
-                      <img src={downIcon} style={{width: '16px'}}/>
-                    </button>
-
-                    {
-                        openIndex===c.id && (
-                            <div className="dropDownPos">
-                                <div className="dropdown-item-pos">Inter</div>
-                                <div className="dropdown-item-pos">Full-time</div>
-                                <div className="dropdown-item-pos">Junior</div>
-                                <div className="dropdown-item-pos">Senior</div>
-                                <div className="dropdown-item-pos">Team Lead</div>
-                            </div>
-                        )
-                    }
-
+                  <td>
+                    <AttendanceDropDown
+                      currentStatus={c.attendance}
+                      onChange={(newStatus) => {
+                        handleAttendanceChange(c._id, newStatus,c.dateOfJoining);
+                      }}
+                    />
                   </td>
+
+                  {/* </td> */}
 
                   <td style={{position: "relative"}}>
                     <img
